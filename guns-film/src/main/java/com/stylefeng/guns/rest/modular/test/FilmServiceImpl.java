@@ -1,6 +1,7 @@
 /*package com.stylefeng.guns.rest.modular.test;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.stylefeng.guns.rest.modular.common.FilmService;
 import org.springframework.stereotype.Component;
 
 @Component

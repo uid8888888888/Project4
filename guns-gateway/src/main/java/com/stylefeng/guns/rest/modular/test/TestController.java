@@ -1,3 +1,4 @@
+/*
 package com.stylefeng.guns.rest.modular.test;
 
 
@@ -17,3 +18,4 @@ public class TestController {
         return filmService.helloWorld();
     }
 }
+*/
