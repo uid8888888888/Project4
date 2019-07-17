@@ -19,4 +19,6 @@ public interface MtimeUserTMapper extends BaseMapper<MtimeUserT> {
     int countByUsername(@Param("username") String username);
 
     int countByUsernameAndPassword(@Param("username") String userName, @Param("password") String password);
+
+    MtimeUserT selectByUsername(@Param("username") String usernameFromToken);
 }

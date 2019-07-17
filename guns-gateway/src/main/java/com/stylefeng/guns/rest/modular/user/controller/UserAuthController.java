@@ -1,6 +1,8 @@
 package com.stylefeng.guns.rest.modular.user.controller;
 
-import com.stylefeng.guns.rest.modular.auth.controller.dto.AuthRequest;
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.stylefeng.guns.rest.modular.auth.util.JwtTokenUtil;
+import com.stylefeng.guns.rest.modular.user.bean.UserAuthRequest;
 import com.stylefeng.guns.rest.modular.user.service.IMtimeUserTService;
 import com.stylefeng.guns.rest.modular.user.vo.StatusDataAndMsg;
 import com.stylefeng.guns.rest.modular.user.vo.TokenAndRandomkey;
@@ -19,24 +21,25 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserAuthController {
 
     @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Reference
     IMtimeUserTService userTService;
 
-    /*yangshuo:
-     * 1. method = RequestMethod.POST
-     * 2.改返回类型ResponseEntity<?>为StatusAndData
-     * 3.改死验证为从数据库取至验证 reqValidator.validate(authRequest)
-     *
-     * */
     @RequestMapping(value = "/auth", method = RequestMethod.POST, params = {"username","password"})
-    public StatusDataAndMsg userLogin(AuthRequest authRequest){
+    public StatusDataAndMsg userLogin(UserAuthRequest authRequest){
         StatusDataAndMsg<Object> statusDataAndMsg = new StatusDataAndMsg<>();
 
         //1.判断用户名和密码都正确
         boolean validate = userTService.validate(authRequest);
         if (validate){
-            //2.产生token
+            //2.在网关产生token
             try {
-                TokenAndRandomkey tokenAndRandomkey = userTService.generateTokenAndRandomkey(authRequest);
+                final String randomKey = jwtTokenUtil.getRandomKey();
+                final String token = jwtTokenUtil.generateToken(authRequest.getUsername(), randomKey);
+                TokenAndRandomkey tokenAndRandomkey = new TokenAndRandomkey();
+                tokenAndRandomkey.setToken(token);
+                tokenAndRandomkey.setRandomKey(randomKey);
                 statusDataAndMsg.setData(tokenAndRandomkey);
                 statusDataAndMsg.setStatus(0);
             }catch (Exception e){

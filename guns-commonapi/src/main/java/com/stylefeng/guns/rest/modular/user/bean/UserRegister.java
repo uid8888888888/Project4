@@ -1,10 +1,14 @@
 package com.stylefeng.guns.rest.modular.user.bean;
 
+import java.io.Serializable;
+
 /**
  * @author YangShuo
  * @date 2019-07-17 10:20
  */
-public class UserRegister {
+public class UserRegister implements Serializable {
+
+    private static final long serialVersionUID = -1799570644053218962L;
     private String username;
     private String password;
     private String email;

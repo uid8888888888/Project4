@@ -28,7 +28,12 @@ public class JwtProperties {
 
     private String md5Key = "randomKey";
 
-    //yangshuo增加不需要拦截路径
+    /*yangshuo增加不需要拦截路径,yml文件书写格式：
+     * jwt:
+     * noFilterUrl:              #自己增加的字段，不需要鉴权的url
+     *   - /user/register        # 用户注册入口
+     *   - /user/check           # 用户名验证入口
+     * */
     private ArrayList<String> noFilterUrl;
 
     public ArrayList<String> getNoFilterUrl() {

@@ -1,20 +1,22 @@
-package com.stylefeng.guns.rest.modular.user.service.impl;
+package com.stylefeng.guns.rest.modular.user.service;
 
-import com.stylefeng.guns.core.exception.GunsException;
-import com.stylefeng.guns.rest.common.exception.BizExceptionEnum;
-import com.stylefeng.guns.rest.common.persistence.model.MtimeUserT;
+
+import com.alibaba.dubbo.config.annotation.Service;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.rest.common.persistence.dao.MtimeUserTMapper;
-import com.stylefeng.guns.rest.modular.auth.controller.dto.AuthRequest;
+import com.stylefeng.guns.rest.common.persistence.model.MtimeUserT;
 import com.stylefeng.guns.rest.modular.auth.util.JwtTokenUtil;
 import com.stylefeng.guns.rest.modular.auth.validator.IReqValidator;
+import com.stylefeng.guns.rest.modular.user.bean.UserAuthRequest;
+import com.stylefeng.guns.rest.modular.user.bean.UserInfo;
 import com.stylefeng.guns.rest.modular.user.bean.UserRegister;
-import com.stylefeng.guns.rest.modular.user.service.IMtimeUserTService;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.stylefeng.guns.rest.modular.user.vo.TokenAndRandomkey;
+import com.stylefeng.guns.rest.modular.user.util.UserInfoToMtimeUserT;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * <p>
@@ -24,8 +26,9 @@ import javax.annotation.Resource;
  * @author yangshuo
  * @since 2019-07-16
  */
-@Service
-public class MtimeUserTServiceImpl extends ServiceImpl<MtimeUserTMapper, MtimeUserT> implements IMtimeUserTService {
+@Component
+@Service(interfaceClass = IMtimeUserTService.class)
+public class MtimeUserTServiceImpl implements IMtimeUserTService {
 
     @Autowired
     MtimeUserTMapper userTMapper;
@@ -36,6 +39,8 @@ public class MtimeUserTServiceImpl extends ServiceImpl<MtimeUserTMapper, MtimeUs
     @Resource(name = "simpleValidator")
     private IReqValidator reqValidator;
 
+
+
     @Override
     public boolean userRegister(UserRegister userRegister) {
         String username = userRegister.getUsername();
@@ -45,8 +50,11 @@ public class MtimeUserTServiceImpl extends ServiceImpl<MtimeUserTMapper, MtimeUs
         String address = userRegister.getAddress();
 
         MtimeUserT mtimeUserT = new MtimeUserT(username,password,email,phone,address);
-        boolean insert = this.insert(mtimeUserT);
-        return insert;
+        Integer insert = userTMapper.insert(mtimeUserT);
+        if (insert == 1){
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -68,22 +76,38 @@ public class MtimeUserTServiceImpl extends ServiceImpl<MtimeUserTMapper, MtimeUs
 
 
     @Override
-    public boolean validate(AuthRequest authRequest) {
+    public boolean validate(UserAuthRequest authRequest) {
         boolean validate = reqValidator.validate(authRequest);
         return validate;
     }
 
     @Override
-    public TokenAndRandomkey generateTokenAndRandomkey(AuthRequest authRequest) throws GunsException {
-        try {
-            final String randomKey = jwtTokenUtil.getRandomKey();
-            final String token = jwtTokenUtil.generateToken(authRequest.getUsername(), randomKey);
-            TokenAndRandomkey tokenAndRandomkey = new TokenAndRandomkey();
-            tokenAndRandomkey.setToken(token);
-            tokenAndRandomkey.setRandomKey(randomKey);
-            return tokenAndRandomkey;
-        } catch (Exception e){
-            throw new GunsException(BizExceptionEnum.AUTH_REQUEST_ERROR);
+    public UserInfo getUserInfoByName(String usernameFromToken) {
+        MtimeUserT mtimeUserT = userTMapper.selectByUsername(usernameFromToken);
+        UserInfo userInfo = UserInfoToMtimeUserT.mtimeUserTtoUserInfo(mtimeUserT);
+        return userInfo;
+
+    }
+
+    @Override
+    public boolean updateUserInfoById(UserInfo userInfo) {
+        MtimeUserT mtimeUserT = UserInfoToMtimeUserT.userInfoToMtimeUserT(userInfo);
+        Integer update = userTMapper.updateById(mtimeUserT);
+
+        if (update == 1){
+            return true;
+        }else {
+            return false;
         }
     }
+
+
+    @Override
+    public UserInfo getUserInfoById(Integer uuid) {
+        MtimeUserT mtimeUserT = userTMapper.selectById(uuid);
+        UserInfo userInfo = UserInfoToMtimeUserT.mtimeUserTtoUserInfo(mtimeUserT);
+        return userInfo;
+    }
+
+
 }

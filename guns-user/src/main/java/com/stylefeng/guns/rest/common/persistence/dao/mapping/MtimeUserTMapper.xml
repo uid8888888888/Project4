@@ -21,10 +21,20 @@
     </resultMap>
 
 
+    <sql id="BaseColumn">
+        UUID, user_name, user_pwd, nick_name, user_sex, birthday, email, user_phone, address, head_url,
+        biography, life_state, begin_time, update_time
+    </sql>
     <select id="countByUsername" resultType="int">
         select count(UUID) from `mtime_user_t` WHERE user_name = #{username}
     </select>
     <select id="countByUsernameAndPassword" resultType="int">
         select count(UUID) from `mtime_user_t` WHERE user_name = #{username} and user_pwd = #{password}
+    </select>
+
+    <select id="selectByUsername" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumn"/>
+        from `mtime_user_t` where user_name = #{username}
     </select>
 </mapper>
