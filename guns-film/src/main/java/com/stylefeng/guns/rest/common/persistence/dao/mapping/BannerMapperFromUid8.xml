@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.rest.common.persistence.dao.BannerMapperFromUid8">
+
+    <resultMap id="banner" type="com.cskaoyan.filmmodule14.Banner" >
+        <result property="bannerId" column="UUID" javaType="Integer"/>
+        <result property="bannerAddress" column="banner_address" javaType="String"/>
+        <result property="bannerUrl" column="banner_url" javaType="String"/>
+    </resultMap>
+
+    <select id="getBanners" resultMap="banner">
+        select UUID,banner_address,banner_url from mtime_banner_t
+    </select>
+
+</mapper>
