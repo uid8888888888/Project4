@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.rest.common.persistence.dao.FilmInfoMapperFromUid8">
+
+    <!--<resultMap id="fileInfo" type="com.cskaoyan.filmmodule14.FilmInfo">
+        <result property="filmId" column="UUID" javaType="Integer"/>
+        <result property="filmType" column="film_type" javaType="Integer"/>
+        <result property="imgAddress" column="img_address" javaType="String"/>
+        <result property="filmName" column="film_name" javaType="String"/>
+        <result property="filmScore" column="film_score" javaType="String"/>
+        <result property="expectNum" column="film_preSaleNum" javaType="Integer"/>
+        <result property="showTime" column="film_time" javaType="Timestamp"/>
+        <result property="boxNum" column="film_box_office" javaType="Integer"/>
+        <result property="score" column="film_score" javaType="String"/>
+    </resultMap>-->
+
+    <resultMap id="hotFilm" type="com.cskaoyan.filmmodule14.FilmInfo">
+        <result property="filmId" column="UUID" javaType="Integer"/>
+        <result property="filmType" column="film_type" javaType="Integer"/>
+        <result property="imgAddress" column="img_address" javaType="String"/>
+        <result property="filmName" column="film_name" javaType="String"/>
+        <result property="filmScore" column="film_score" javaType="String"/>
+    </resultMap>
+
+    <select id="getHotFilm" resultMap="hotFilm">
+        select UUID,film_type,img_address,film_name,film_score from mtime_film_t where film_status = 1
+    </select>
+
+    <resultMap id="soonFilm" type="com.cskaoyan.filmmodule14.FilmInfo">
+        <result property="filmId" column="UUID" javaType="Integer"/>
+        <result property="filmType" column="film_type" javaType="Integer"/>
+        <result property="imgAddress" column="img_address" javaType="String"/>
+        <result property="filmName" column="film_name" javaType="String"/>
+        <result property="expectNum" column="film_preSaleNum" javaType="Integer"/>
+        <result property="showTime" column="film_time" javaType="java.sql.Timestamp"/>
+    </resultMap>
+
+    <select id="getSoonFilm" resultMap="soonFilm">
+        select UUID,film_type,img_address,film_name,film_preSaleNum,film_time from mtime_film_t where film_status = 2
+    </select>
+
+    <resultMap id="boxRanking" type="com.cskaoyan.filmmodule14.FilmInfo">
+        <result property="filmId" column="UUID" javaType="Integer"/>
+        <result property="imgAddress" column="img_address" javaType="String"/>
+        <result property="filmName" column="film_name" javaType="String"/>
+        <result property="boxNum" column="film_box_office" javaType="Integer"/>
+    </resultMap>
+
+    <select id="getBoxRanking" resultMap="boxRanking">
+        select UUID,img_address,film_name,film_box_office from mtime_film_t order by film_box_office desc
+    </select>
+
+    <resultMap id="expectRanking" type="com.cskaoyan.filmmodule14.FilmInfo">
+        <result property="filmId" column="UUID" javaType="Integer"/>
+        <result property="imgAddress" column="img_address" javaType="String"/>
+        <result property="filmName" column="film_name" javaType="String"/>
+        <result property="expectNum" column="film_preSaleNum" javaType="Integer"/>
+    </resultMap>
+
+    <select id="getExpectRanking" resultMap="expectRanking">
+        select UUID,img_address,film_name,film_preSaleNum from mtime_film_t order by film_preSaleNum desc
+    </select>
+
+    <resultMap id="top100Ranking" type="com.cskaoyan.filmmodule14.FilmInfo">
+        <result property="filmId" column="UUID" javaType="Integer"/>
+        <result property="imgAddress" column="img_address" javaType="String"/>
+        <result property="filmName" column="film_name" javaType="String"/>
+        <result property="score" column="film_score" javaType="String"/>
+    </resultMap>
+
+    <select id="getTop100Ranking" resultMap="top100Ranking">
+        select UUID,img_address,film_name,film_score from mtime_film_t order by film_score desc
+    </select>
+</mapper>
