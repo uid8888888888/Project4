@@ -1,4 +1,4 @@
-package com.stylefeng.guns.rest.modular.service;
+package com.cskaoyan.filmmodule14.Service;
 
 import com.cskaoyan.filmmodule14.FilmDetail;
 

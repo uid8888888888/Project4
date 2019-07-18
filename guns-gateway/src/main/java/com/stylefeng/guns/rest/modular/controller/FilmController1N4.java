@@ -5,8 +5,8 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.cskaoyan.commonbean.ErrResponseVo;
 import com.cskaoyan.filmmodule14.FilmIndex;
 import com.cskaoyan.filmmodule14.ResponseVo4FilmModule1N4;
-import com.stylefeng.guns.rest.modular.service.FilmDetailService;
-import com.stylefeng.guns.rest.modular.service.FilmIndexService;
+import com.cskaoyan.filmmodule14.Service.FilmDetailService;
+import com.cskaoyan.filmmodule14.Service.FilmIndexService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -2,6 +2,7 @@ package com.stylefeng.guns.rest.modular.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.cskaoyan.filmmodule14.*;
+import com.cskaoyan.filmmodule14.Service.FilmDetailService;
 import com.stylefeng.guns.rest.common.persistence.dao.SearchFilmDetailMapperFromUid8;
 import com.stylefeng.guns.rest.common.persistence.model.MtimeFilmInfoT;
 import com.stylefeng.guns.rest.common.persistence.model.MtimeFilmT;
