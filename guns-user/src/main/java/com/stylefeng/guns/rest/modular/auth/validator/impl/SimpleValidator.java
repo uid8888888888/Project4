@@ -3,6 +3,7 @@ package com.stylefeng.guns.rest.modular.auth.validator.impl;
 import com.stylefeng.guns.rest.common.persistence.dao.MtimeUserTMapper;
 import com.stylefeng.guns.rest.modular.auth.validator.IReqValidator;
 import com.stylefeng.guns.rest.modular.auth.validator.dto.Credence;
+import com.stylefeng.guns.rest.modular.user.util.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,11 +43,14 @@ public class SimpleValidator implements IReqValidator {
         String userName = credence.getCredenceName();
         String password = credence.getCredenceCode();
 
-        int count = userTMapper.countByUsernameAndPassword(userName,password);
-        if (count == 0) {
-            return false;
-        } else {
+       //将传入的密码加密后与从数据库取出username对应的password对照
+        String passwordInDB = userTMapper.getPasswordByUsername(userName);
+
+        if (passwordInDB.equals(Md5Util.getMD5(password))){
+            //密码正确
             return true;
+        }else {
+            return false;
         }
     }
 

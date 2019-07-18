@@ -3,6 +3,7 @@ package com.stylefeng.guns.rest.modular.user.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.stylefeng.guns.core.util.MD5Util;
 import com.stylefeng.guns.rest.common.persistence.dao.MtimeUserTMapper;
 import com.stylefeng.guns.rest.common.persistence.model.MtimeUserT;
 import com.stylefeng.guns.rest.modular.auth.util.JwtTokenUtil;
@@ -10,6 +11,7 @@ import com.stylefeng.guns.rest.modular.auth.validator.IReqValidator;
 import com.stylefeng.guns.rest.modular.user.bean.UserAuthRequest;
 import com.stylefeng.guns.rest.modular.user.bean.UserInfo;
 import com.stylefeng.guns.rest.modular.user.bean.UserRegister;
+import com.stylefeng.guns.rest.modular.user.util.Md5Util;
 import com.stylefeng.guns.rest.modular.user.util.UserInfoToMtimeUserT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,6 +50,9 @@ public class MtimeUserTServiceImpl implements IMtimeUserTService {
         String email = userRegister.getEmail();
         String phone = userRegister.getPhone();
         String address = userRegister.getAddress();
+
+        //密码需要先加密再存入数据库
+        password = Md5Util.getMD5(password);
 
         MtimeUserT mtimeUserT = new MtimeUserT(username,password,email,phone,address);
         Integer insert = userTMapper.insert(mtimeUserT);

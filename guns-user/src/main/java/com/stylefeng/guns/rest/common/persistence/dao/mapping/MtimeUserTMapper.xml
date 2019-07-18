@@ -37,4 +37,8 @@
         <include refid="BaseColumn"/>
         from `mtime_user_t` where user_name = #{username}
     </select>
+
+    <select id="getPasswordByUsername" resultType="string">
+        select user_pwd from `mtime_user_t` where user_name = #{username}
+    </select>
 </mapper>
