@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.stylefeng.guns</groupId>
-    <artifactId>guns-gateway</artifactId>
+    <artifactId>guns-cinema</artifactId>
     <version>0.0.1</version>
     <packaging>jar</packaging>
 
-    <name>guns-gateway</name>
-    <description>guns 网关微服务</description>
+    <name>guns-cinema</name>
+    <description>guns cinema服务器</description>
 
     <parent>
         <groupId>com.stylefeng</groupId>
@@ -31,7 +31,6 @@
             <artifactId>dubbo-spring-boot-starter</artifactId>
             <version>2.0.0</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -56,23 +55,12 @@
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
-        <dependency>
-            <groupId>com.101tec</groupId>
-            <artifactId>zkclient</artifactId>
-            <version>0.10</version>
-        </dependency>
 
         <dependency>
             <groupId>com.101tec</groupId>
             <artifactId>zkclient</artifactId>
             <version>0.10</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.6</version>
-        </dependency>
-
     </dependencies>
 
     <build>
