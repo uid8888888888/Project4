@@ -4,9 +4,9 @@
 
 
     <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.modular.film.vo.SourceInfo">
-        <id column="UUID" property="sourceId" />
-        <result column="show_name" property="sourceName" />
-        <result column="is_Active" property="isActive" />
+        <id column="UUID" property="sourceId" javaType="Integer"/>
+        <result column="show_name" property="sourceName" javaType="String"/>
+        <result column="is_Active" property="isActive" javaType="Boolean"/>
     </resultMap>
 
     <select id="getAllSourceInfo"  resultMap="BaseResultMap">

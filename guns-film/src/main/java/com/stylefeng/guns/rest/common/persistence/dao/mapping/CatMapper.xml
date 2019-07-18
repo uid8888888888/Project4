@@ -4,9 +4,9 @@
 
 
     <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.modular.film.vo.CatInfo">
-        <id column="UUID" property="catId" />
-        <result column="show_name" property="catName" />
-        <result column="is_Active" property="isActive" />
+        <result column="UUID" property="catId" javaType="Integer"/>
+        <result column="show_name" property="catName" javaType="String"/>
+        <result column="is_Active" property="isActive" javaType="Boolean"/>
     </resultMap>
 
     <select id="getAllCatInfo"  resultMap="BaseResultMap">

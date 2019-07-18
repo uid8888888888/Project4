@@ -2,11 +2,14 @@ package com.stylefeng.guns.rest.modular.film;
 
 
 import com.alibaba.dubbo.config.annotation.Reference;
+
+
 import com.stylefeng.guns.rest.modular.film.vo.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+
 
 /**
  * @Author IL-M
@@ -15,7 +18,7 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/film")
 public class FilmController {
-    @Reference
+    @Reference(interfaceClass = FilmService.class,check = false)
     FilmService service ;
 
     @RequestMapping("/getConditionList")
@@ -38,5 +41,16 @@ public class FilmController {
     }
 
     @RequestMapping("/getFilms")
-    public
+    public FilmResult getFilms(FilmRequestVO filmRequest){
+        ArrayList<FilmInfo> films = service.getFilms(filmRequest);
+        FilmResult filmResult = new FilmResult();
+        filmResult.setData(films);
+
+        filmResult.setStatus(0);
+        filmResult.setImgPre("http://img.meetingshop.cn/");
+        filmResult.setNowPage(filmRequest.getNowPage());
+        //总页数待完成
+        filmResult.setTotalPage(3);
+        return filmResult;
+    }
 }

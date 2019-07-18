@@ -8,7 +8,35 @@ import java.io.Serializable;
  */
 public class YearInfo implements Serializable {
     private static final long serialVersionUID = -17570505299681132L;
-    int yearId;
-    String yearName;
-    boolean isActive;
+    private int yearId;
+    private String yearName;
+    private boolean isActive;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getYearId() {
+        return yearId;
+    }
+
+    public void setYearId(int yearId) {
+        this.yearId = yearId;
+    }
+
+    public String getYearName() {
+        return yearName;
+    }
+
+    public void setYearName(String yearName) {
+        this.yearName = yearName;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 }
