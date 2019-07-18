@@ -1,7 +1,13 @@
-/*package com.stylefeng.guns.rest.modular.test;
+
+package com.stylefeng.guns.rest.modular.test;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.stylefeng.guns.rest.modular.common.FilmService;
+
+package com.stylefeng.guns.rest.modular.test;
+
+import com.alibaba.dubbo.config.annotation.Service;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,4 +17,7 @@ public class FilmServiceImpl implements FilmService {
     public String helloWorld() {
         return "Hello,World";
     }
-}*/
+
+}
+
+

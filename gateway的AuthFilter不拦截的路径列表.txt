@@ -1,0 +1,12 @@
+# 2019-07-17 杨朔修改gateway的AuthFilter、JwtProperties，目的是设置不需要鉴权的url。
+
+# 打开gateway鉴权开关后，对于不需要鉴权的url，
+# 只需要写在gateway的yml文件的jwt配置的noFilterUrl里，格式如下：
+
+jwt:
+  noFilterUrl:            #自己增加的字段，不需要鉴权的url
+    - /user/register        # 用户注册入口
+    - /user/check           # 用户名验证入口..（请各模块将自己不需要鉴权的url也写在这个文件里，方便其他人使用）
+
+
+

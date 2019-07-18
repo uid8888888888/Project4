@@ -3,6 +3,8 @@ package com.stylefeng.guns.rest.config.properties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
+
 /**
  * jwt相关配置
  *
@@ -24,6 +26,24 @@ public class JwtProperties {
     private String authPath = "auth";
 
     private String md5Key = "randomKey";
+
+
+    /*yangshuo增加不需要拦截路径,yml文件书写格式：
+    * jwt:
+    * noFilterUrl:              #自己增加的字段，不需要鉴权的url
+    *   - /user/register        # 用户注册入口
+    *   - /user/check           # 用户名验证入口
+    * */
+    private ArrayList<String> noFilterUrl;
+
+    public ArrayList<String> getNoFilterUrl() {
+        return noFilterUrl;
+    }
+
+    public void setNoFilterUrl(ArrayList<String> noFilterUrl) {
+        this.noFilterUrl = noFilterUrl;
+    }
+
 
     public static String getJwtPrefix() {
         return JWT_PREFIX;

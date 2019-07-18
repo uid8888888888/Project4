@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.cskaoyan.filmmodule14.Banner;
 import com.cskaoyan.filmmodule14.FilmInfo;
 import com.cskaoyan.filmmodule14.FilmVo;
+import com.cskaoyan.filmmodule14.Service.FilmIndexService;
 import com.stylefeng.guns.rest.common.persistence.dao.BannerMapperFromUid8;
 import com.stylefeng.guns.rest.common.persistence.dao.FilmInfoMapperFromUid8;
 import org.springframework.beans.factory.annotation.Autowired;
