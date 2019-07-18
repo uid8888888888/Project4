@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/user")
 public class MtimeUserTController {
 
-    @Reference
+    @Reference(check = false)
     IMtimeUserTService userTService;
 
     @Autowired

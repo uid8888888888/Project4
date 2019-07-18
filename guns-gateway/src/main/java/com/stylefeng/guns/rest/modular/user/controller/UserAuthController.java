@@ -23,7 +23,7 @@ public class UserAuthController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @Reference
+    @Reference(check = false)
     IMtimeUserTService userTService;
 
     @RequestMapping(value = "/auth", method = RequestMethod.POST, params = {"username","password"})
