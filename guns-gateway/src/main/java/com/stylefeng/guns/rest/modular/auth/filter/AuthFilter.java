@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * 对客户端请求的jwt token验证过滤器
@@ -39,6 +40,14 @@ public class AuthFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
+        //增加其他不需要拦截的路径
+        ArrayList<String> noFilterUrl = jwtProperties.getNoFilterUrl();
+        String servletPath = request.getServletPath();
+        if (noFilterUrl.contains(servletPath)){
+            chain.doFilter(request, response);
+            return;
+        }//noFilterUrl
+
         final String requestHeader = request.getHeader(jwtProperties.getHeader());
         String authToken = null;
         if (requestHeader != null && requestHeader.startsWith("Bearer ")) {

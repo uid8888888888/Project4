@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.rest.common.persistence.dao.SearchFilmDetailMapperFromUid8">
+
+    <resultMap id="mtimeFilmInfoT" type="com.stylefeng.guns.rest.common.persistence.model.MtimeFilmInfoT">
+        <result property="UUID" column="UUID" javaType="Integer"/>
+        <result property="filmId" column="film_id" javaType="String"/>
+        <result property="filmEnName" column="film_en_name" javaType="String"/>
+        <result property="filmScoreNum" column="film_score_num" javaType="Integer"/>
+        <result property="filmLength" column="film_length" javaType="Integer"/>
+        <result property="biography" column="biography" javaType="String"/>
+        <result property="directorId" column="director_id" javaType="Integer"/>
+        <result property="filmImgs" column="film_imgs" typeHandler="com.stylefeng.guns.rest.common.persistence.typehandler.MyTypeHandler1"/>
+    </resultMap>
+
+    <select id="getFilmInfoById" resultMap="mtimeFilmInfoT">
+        select UUID,film_id,film_en_name,film_score_num,film_length,biography,director_id,film_imgs from mtime_film_info_t where film_id = #{id}
+    </select>
+
+    <resultMap id="mtimeFilmT" type="com.stylefeng.guns.rest.common.persistence.model.MtimeFilmT">
+        <result property="UUID" column="UUID" javaType="Integer"/>
+        <result property="FilmName" column="film_name" javaType="String"/>
+        <result property="FilmType" column="film_type" javaType="Integer"/>
+        <result property="imgAddress" column="img_address" javaType="String"/>
+        <result property="filmScore" column="film_score" javaType="String"/>
+        <result property="filmBoxOffice" column="film_box_office" javaType="Integer"/>
+        <result property="filmSource" column="film_source" javaType="Integer"/>
+        <result property="filmCats" column="film_cats" typeHandler="com.stylefeng.guns.rest.common.persistence.typehandler.MyTypeHandler2"/>
+        <result property="filmArea" column="film_area" javaType="Integer"/>
+        <result property="filmDate" column="film_date" javaType="Integer"/>
+        <result property="filmTime" column="film_time" javaType="java.sql.Timestamp"/>
+    </resultMap>
+    
+    <select id="getFilmByFullName" resultMap="mtimeFilmT">
+        select UUID,film_name,film_type,img_address,film_score,film_box_office,film_source,film_cats,
+        film_area,film_date,film_time from mtime_film_t where film_name = #{name}
+    </select>
+
+    <select id="getFilmById" resultMap="mtimeFilmT">
+        select UUID,film_name,film_type,img_address,film_score,film_box_office,film_source,film_cats,
+        film_area,film_date,film_time from mtime_film_t where UUID = #{id}
+    </select>
+
+    <resultMap id="actor" type="com.cskaoyan.filmmodule14.Actor">
+        <result property="imgAddresss" column="actor_img" javaType="String"/>
+        <result property="directorName" column="actor_name" javaType="String"/>
+        <result property="roleName" column="role_name" javaType="String"/>
+    </resultMap>
+
+    <select id="getActorsByFilmId" resultMap="actor">
+        select a.actor_img,a.actor_name,r.role_name from mtime_film_actor_t r
+        left join mtime_actor_t a on r.actor_id = a.UUID
+        where r.film_id = #{id}
+    </select>
+
+    <select id="getCategoryById" resultType="String">
+        select show_name from mtime_cat_dict_t where UUID = #{id}
+    </select>
+
+    <select id="getSourceById" resultType="String">
+        select show_name from mtime_source_dict_t where UUID = #{id}
+    </select>
+
+    <select id="getActorByActorId" resultMap="actor">
+        select actor_img,actor_name from mtime_actor_t where UUID = #{id}
+    </select>
+</mapper>
