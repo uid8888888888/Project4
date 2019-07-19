@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.rest.common.persistence.dao.FilmMapper">
+
+
+    <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.modular.film.vo.FilmInfo">
+        <result column="UUID" property="filmId" javaType="Integer"/>
+        <result column="film_type" property="filmType" javaType="Integer"/>
+        <result column="img_address" property="imgAddress" javaType="String"/>
+        <result column="film_name" property="filmName" javaType="String"/>
+        <result column="film_score" property="filmScore" javaType="Double"/>
+    </resultMap>
+
+    <select id="allCatFilmList"  resultMap="BaseResultMap" >
+        SELECT UUID,film_type,img_address,film_name,film_score FROM `mtime_film_t`
+        where 1=1
+         <if test="yearId!=99">
+             and film_date = #{yearId}
+         </if>
+          <if test="sourceId!=99">
+              and film_source = #{sourceId}
+          </if>
+          and film_status = #{showType}
+          <if test="sortId==2">
+              order by film_date desc
+          </if>
+          <if test="sortId==3">
+              order by film_score desc
+          </if>
+
+    </select>
+
+    <select id="oneCatFilmList"  resultMap="BaseResultMap" >
+        SELECT UUID,film_type,img_address,film_name,film_score FROM `mtime_film_t`
+        where film_cats like #{catId}
+        <if test="yearId!=99">
+            and film_date = #{yearId}
+        </if>
+        <if test="sourceId!=99">
+            and film_source = #{sourceId}
+        </if>
+        and film_status = #{showType}
+        <if test="sortId==2">
+            order by film_date desc
+        </if>
+        <if test="sortId==3">
+            order by film_score desc
+        </if>
+
+    </select>
+
+
+
+</mapper>

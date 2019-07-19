@@ -16,12 +16,14 @@ public class MyTypeHandler2 implements TypeHandler<String[]> {
             return;
         }
         StringBuffer sb = new StringBuffer();
+        sb.append("#");
         for (String string : strings) {
             sb.append(string);
             sb.append("#");
         }
-        String substring = sb.substring(0, sb.length() - 1);
-        preparedStatement.setString(i,substring);
+        //String substring = sb.substring(0, sb.length() - 1);
+        String s = sb.toString();
+        preparedStatement.setString(i,s);
     }
 
     @Override
