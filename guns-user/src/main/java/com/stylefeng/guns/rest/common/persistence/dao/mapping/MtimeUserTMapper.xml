@@ -41,4 +41,8 @@
     <select id="getPasswordByUsername" resultType="string">
         select user_pwd from `mtime_user_t` where user_name = #{username}
     </select>
+
+    <select id="getUseridByName" resultType="int">
+        select UUID from `mtime_user_t` where user_name = #{username}
+    </select>
 </mapper>
