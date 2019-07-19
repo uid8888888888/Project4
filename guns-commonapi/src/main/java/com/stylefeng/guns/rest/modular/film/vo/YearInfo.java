@@ -1,5 +1,7 @@
 package com.stylefeng.guns.rest.modular.film.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 /**
@@ -10,7 +12,8 @@ public class YearInfo implements Serializable {
     private static final long serialVersionUID = -17570505299681132L;
     private int yearId;
     private String yearName;
-    private boolean isActive;
+    @JsonProperty("isActive")
+    private boolean isActive = false;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

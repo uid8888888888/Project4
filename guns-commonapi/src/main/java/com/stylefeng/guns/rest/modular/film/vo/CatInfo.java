@@ -1,5 +1,7 @@
 package com.stylefeng.guns.rest.modular.film.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 /**
@@ -11,7 +13,8 @@ public class CatInfo implements Serializable {
     private static final long serialVersionUID = 7135578036099052681L;
     private int catId;
     private String  catName;
-    private boolean isActive;
+    @JsonProperty("isActive")
+    private boolean isActive = false;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

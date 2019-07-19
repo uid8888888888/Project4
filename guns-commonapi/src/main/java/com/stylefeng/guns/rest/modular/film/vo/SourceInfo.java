@@ -1,5 +1,7 @@
 package com.stylefeng.guns.rest.modular.film.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 /**
@@ -10,7 +12,8 @@ public class SourceInfo  implements Serializable {
    private static final long serialVersionUID = 1968050023724557567L;
    private int sourceId;
    private String sourceName;
-   private boolean isActive;
+   @JsonProperty("isActive")
+   private boolean isActive = false;
 
    public static long getSerialVersionUID() {
       return serialVersionUID;

@@ -14,10 +14,10 @@
     <select id="allCatFilmList"  resultMap="BaseResultMap" >
         SELECT UUID,film_type,img_address,film_name,film_score FROM `mtime_film_t`
         where 1=1
-         <if test="yearId!=99">
+         <if test="yearId!=99 ">
              and film_date = #{yearId}
          </if>
-          <if test="sourceId!=99">
+          <if test="sourceId!=99 ">
               and film_source = #{sourceId}
           </if>
           and film_status = #{showType}
@@ -33,10 +33,10 @@
     <select id="oneCatFilmList"  resultMap="BaseResultMap" >
         SELECT UUID,film_type,img_address,film_name,film_score FROM `mtime_film_t`
         where film_cats like #{catId}
-        <if test="yearId!=99">
+        <if test="yearId!=99 ">
             and film_date = #{yearId}
         </if>
-        <if test="sourceId!=99">
+        <if test="sourceId!=99 ">
             and film_source = #{sourceId}
         </if>
         and film_status = #{showType}
