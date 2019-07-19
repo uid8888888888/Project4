@@ -2,6 +2,8 @@ package com.stylefeng.guns.rest.modular.film;
 
 
 import com.alibaba.dubbo.config.annotation.Service;
+
+import com.github.pagehelper.PageHelper;
 import com.stylefeng.guns.rest.common.persistence.dao.CatMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.FilmMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.SourceMapper;
@@ -68,24 +70,51 @@ public class FilmServiceImpl implements FilmService {
     FilmMapper filmMapper;
 
     @Override
-    public ArrayList<FilmInfo> getFilms(FilmRequestVO filmRequest) {
+    public Page<FilmInfo> getFilms(FilmRequestVO filmRequest) {
         //分页待完成
+        Page<FilmInfo> page = new Page<>();
+        Integer nowPage = filmRequest.getNowPage();
+        Integer pageSize = filmRequest.getPageSize();
+
         ArrayList<FilmInfo> films = null;
         Integer catId = filmRequest.getCatId();
         if(catId==99){
             //忽略catid条件
             String filmCat = catId.toString();
-            films = filmMapper.allCatFilmList(filmRequest.getShowType(),
+            PageHelper.startPage(nowPage,pageSize);
+             films =filmMapper.allCatFilmList(filmRequest.getShowType(),
                     filmRequest.getSortId(),filmCat,
                     filmRequest.getSourceId(), filmRequest.getYearId());
+
+            int count = filmMapper.allCatFilmList(filmRequest.getShowType(),
+                    filmRequest.getSortId(), filmCat,
+                    filmRequest.getSourceId(), filmRequest.getYearId()).size();
+            page.setStatus(0);
+            page.setImgPre("http://img.meetingshop.cn/");
+            page.setNowPage(nowPage);
+            page.setTotalPage(count/pageSize);
+            page.setData(films);
+
+
         }else{
             String filmCat = catId.toString();
             filmCat = "%#" + filmCat + "#%";
+            PageHelper.startPage(nowPage,pageSize);
             films = filmMapper.oneCatFilmList(filmRequest.getShowType(),
                     filmRequest.getSortId(),filmCat,
                     filmRequest.getSourceId(), filmRequest.getYearId());
+
+            int count = filmMapper.allCatFilmList(filmRequest.getShowType(),
+                    filmRequest.getSortId(), filmCat,
+                    filmRequest.getSourceId(), filmRequest.getYearId()).size();
+            page.setStatus(0);
+            page.setImgPre("http://img.meetingshop.cn/");
+            page.setNowPage(nowPage);
+            page.setTotalPage(count/pageSize);
+            page.setData(films);
+
         }
-        return films;
+        return page;
 
     }
 

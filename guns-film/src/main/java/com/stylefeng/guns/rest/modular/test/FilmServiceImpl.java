@@ -1,4 +1,4 @@
-
+/*
 package com.stylefeng.guns.rest.modular.test;
 
 import com.alibaba.dubbo.config.annotation.Service;
@@ -18,6 +18,6 @@ public class FilmServiceImpl implements FilmService {
         return "Hello,World";
     }
 
-}
+}*/
 
 

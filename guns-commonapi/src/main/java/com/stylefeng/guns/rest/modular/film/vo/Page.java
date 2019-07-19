@@ -1,17 +1,22 @@
 package com.stylefeng.guns.rest.modular.film.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @Author IL-M
- * @Date:2019/7/17 23:30
+ * @Date:2019/7/18 23:26
  */
-public class FilmResult {
-    int status;
-    String imgPre;
-    int nowPage;
-    int totalPage;
-    List<FilmInfo> data;
+public class Page<T> implements Serializable {
+
+
+    private static final long serialVersionUID = -6387996992042236453L;
+
+    private int status;
+    private String imgPre;
+    private int nowPage;
+    private int totalPage;
+    private List<T> data;
 
     public int getStatus() {
         return status;
@@ -45,11 +50,13 @@ public class FilmResult {
         this.totalPage = totalPage;
     }
 
-    public List<FilmInfo> getData() {
+    public List<T> getData() {
         return data;
     }
 
-    public void setData(List<FilmInfo> data) {
+    public void setData(List<T> data) {
         this.data = data;
     }
 }
+
+

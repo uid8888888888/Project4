@@ -58,4 +58,15 @@ public class FilmInfo  implements Serializable {
    public void setFilmScore(double filmScore) {
       this.filmScore = filmScore;
    }
+
+   @Override
+   public String toString() {
+      return "FilmInfo{" +
+              "filmId=" + filmId +
+              ", filmType=" + filmType +
+              ", imgAddress='" + imgAddress + '\'' +
+              ", filmName='" + filmName + '\'' +
+              ", filmScore=" + filmScore +
+              '}';
+   }
 }

@@ -12,6 +12,6 @@ public interface FilmService {
     ArrayList<CatInfo> getcatInfoByCatId(int catId);
     ArrayList<SourceInfo>  getsourceInfoByCatId(int sourceId);
     ArrayList<YearInfo> getyearInfoByCatId(int yearId);
-    ArrayList<FilmInfo> getFilms(FilmRequestVO filmRequest);
+    Page<FilmInfo> getFilms(FilmRequestVO filmRequest);
 
 }

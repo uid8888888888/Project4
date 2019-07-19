@@ -5,11 +5,20 @@ package com.stylefeng.guns.rest.modular.film.vo;
  * @Date:2019/7/16 17:05
  */
 public class ConditionListResult {
-    int status;
-    ConditionListVO data;
+    private int status;
+    private String msg;
+    private ConditionListVO data;
 
     public int getStatus() {
         return status;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public void setStatus(int status) {

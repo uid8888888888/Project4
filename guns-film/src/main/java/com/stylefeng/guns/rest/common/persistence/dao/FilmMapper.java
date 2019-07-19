@@ -1,5 +1,6 @@
 package com.stylefeng.guns.rest.common.persistence.dao;
 
+import com.github.pagehelper.Page;
 import com.stylefeng.guns.rest.modular.film.vo.FilmInfo;
 
 import java.util.ArrayList;
@@ -10,5 +11,5 @@ import java.util.ArrayList;
  */
 public interface FilmMapper {
     ArrayList<FilmInfo> oneCatFilmList(Integer showType,Integer sortId,String catId,Integer sourceId,Integer yearId);
-    ArrayList<FilmInfo> allCatFilmList(Integer showType,Integer sortId,String catId,Integer sourceId,Integer yearId);
+    ArrayList<FilmInfo> allCatFilmList(Integer showType, Integer sortId, String catId, Integer sourceId, Integer yearId);
 }

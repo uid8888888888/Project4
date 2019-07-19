@@ -23,34 +23,36 @@ public class FilmController {
 
     @RequestMapping("/getConditionList")
     public ConditionListResult getConditionList(int catId, int sourceId, int yearId ){
-        //调用服务
-        //查询各列表
-        ArrayList<CatInfo> catInfos = service.getcatInfoByCatId(catId);
-        ArrayList<SourceInfo> sourceInfos = service.getsourceInfoByCatId(sourceId);
-        ArrayList<YearInfo> yearInfos = service.getyearInfoByCatId(yearId);
-        //封装返回值data
-        ConditionListVO conditionListVO = new ConditionListVO();
-        conditionListVO.setCatInfo(catInfos);
-        conditionListVO.setSourceInfo(sourceInfos);
-        conditionListVO.setYearInfo(yearInfos);
-
         ConditionListResult conditionListResult = new ConditionListResult();
-        conditionListResult.setStatus(0);
-        conditionListResult.setData(conditionListVO);
+        try{
+            ArrayList<CatInfo> catInfos = service.getcatInfoByCatId(catId);
+            ArrayList<SourceInfo> sourceInfos = service.getsourceInfoByCatId(sourceId);
+            ArrayList<YearInfo> yearInfos = service.getyearInfoByCatId(yearId);
+            ConditionListVO conditionListVO = new ConditionListVO();
+            conditionListVO.setCatInfo(catInfos);
+            conditionListVO.setSourceInfo(sourceInfos);
+            conditionListVO.setYearInfo(yearInfos);
+            if(null != catInfos && catInfos.size()!=0 ||
+            null != sourceInfos && sourceInfos.size()!=0 ||
+            null != yearInfos && yearInfos.size()!=0 ){
+                conditionListResult.setStatus(0);
+                conditionListResult.setData(conditionListVO);
+            }else{
+                conditionListResult.setStatus(1);
+                conditionListResult.setMsg("查询失败，无条件可加载");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            conditionListResult.setStatus(999);
+            conditionListResult.setMsg("系统出现异常，请联系管理员");
+        }
         return conditionListResult;
     }
 
     @RequestMapping("/getFilms")
-    public FilmResult getFilms(FilmRequestVO filmRequest){
-        ArrayList<FilmInfo> films = service.getFilms(filmRequest);
-        FilmResult filmResult = new FilmResult();
-        filmResult.setData(films);
+    public Page<FilmInfo> getFilms(FilmRequestVO filmRequest){
+        Page<FilmInfo> films = service.getFilms(filmRequest);
 
-        filmResult.setStatus(0);
-        filmResult.setImgPre("http://img.meetingshop.cn/");
-        filmResult.setNowPage(filmRequest.getNowPage());
-        //总页数待完成
-        filmResult.setTotalPage(3);
-        return filmResult;
+        return films;
     }
 }
