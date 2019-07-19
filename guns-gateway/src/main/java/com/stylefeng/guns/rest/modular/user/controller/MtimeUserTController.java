@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/user")
 public class MtimeUserTController {
 
-
     @Reference(interfaceClass = IMtimeUserTService.class,check = false)
     IMtimeUserTService userTService;
 
@@ -160,6 +159,44 @@ public class MtimeUserTController {
         return statusDataAndMsg;
 
 
+    }
+
+
+    /*
+    * 用户退出登录入口
+    * */
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @ResponseBody
+    public StatusAndMsg userLogout(HttpServletRequest request){
+        //从request里取token和username，查redis里这个token是否存在
+        //从request里获取token,进而获取username
+        String requestHeader = request.getHeader(jwtProperties.getHeader());
+        String authToken = requestHeader.substring(7);
+        String usernameFromToken = jwtTokenUtil.getUsernameFromToken(authToken);
+
+        String userTokenKey = usernameFromToken + "Token";
+        StatusAndMsg statusAndMsg = new StatusAndMsg();
+        boolean flag = false;
+        try {
+            flag = userTService.jedisTokenExist(userTokenKey, authToken);
+        }catch (Exception e){
+            //系统异常
+            statusAndMsg.setStatus(999);
+            statusAndMsg.setMsg("系统异常，请联系管理员");
+            return statusAndMsg;
+        }
+
+        if (flag){
+            //1.token存在，则清除redis里这个token
+            userTService.jedisTokenClean(userTokenKey,authToken);
+            statusAndMsg.setStatus(0);
+            statusAndMsg.setMsg("成功退出");
+        }else {
+            //2.token不存在，则为未登录
+            statusAndMsg.setStatus(1);
+            statusAndMsg.setMsg("退出失败，用户尚未登录");
+        }
+        return statusAndMsg;
     }
 
 

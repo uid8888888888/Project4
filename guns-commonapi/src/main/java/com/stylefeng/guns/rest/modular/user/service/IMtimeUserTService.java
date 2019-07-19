@@ -36,4 +36,16 @@ public interface IMtimeUserTService {
 
     //用户信息查询，使用用户编号作为查询参数
     UserInfo getUserInfoById(Integer uuid);
+
+    //用户token存入redis,用户之后退出使用
+    String jedisStoreToken(String userTokenKey, String token);
+
+    //用户关键信息（如userId）存入redis, 供其他模块使用
+    String jedisStoreUserMsg(String username);
+
+    //用户退出时，查redis里是否存在对应的token
+    boolean jedisTokenExist(String userTokenKey, String authToken);
+
+    //用户退出时，清除redis里对应token
+    boolean jedisTokenClean(String userTokenKey, String authToken);
 }

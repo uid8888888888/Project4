@@ -2,8 +2,7 @@ package com.stylefeng.guns.rest.modular.user.service;
 
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.stylefeng.guns.core.util.MD5Util;
+import com.alibaba.fastjson.JSON;
 import com.stylefeng.guns.rest.common.persistence.dao.MtimeUserTMapper;
 import com.stylefeng.guns.rest.common.persistence.model.MtimeUserT;
 import com.stylefeng.guns.rest.modular.auth.util.JwtTokenUtil;
@@ -11,14 +10,14 @@ import com.stylefeng.guns.rest.modular.auth.validator.IReqValidator;
 import com.stylefeng.guns.rest.modular.user.bean.UserAuthRequest;
 import com.stylefeng.guns.rest.modular.user.bean.UserInfo;
 import com.stylefeng.guns.rest.modular.user.bean.UserRegister;
+import com.stylefeng.guns.rest.modular.user.util.JedisUtil;
 import com.stylefeng.guns.rest.modular.user.util.Md5Util;
 import com.stylefeng.guns.rest.modular.user.util.UserInfoToMtimeUserT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
-import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * <p>
@@ -112,6 +111,57 @@ public class MtimeUserTServiceImpl implements IMtimeUserTService {
         MtimeUserT mtimeUserT = userTMapper.selectById(uuid);
         UserInfo userInfo = UserInfoToMtimeUserT.mtimeUserTtoUserInfo(mtimeUserT);
         return userInfo;
+    }
+
+    @Override
+    public String jedisStoreToken(String userTokenKey, String token) {
+        Jedis jedis = JedisUtil.getJedisFromPool();
+        String result = jedis.set(userTokenKey, token);
+        jedis.close();
+
+        return result;
+    }
+
+    @Override
+    public String jedisStoreUserMsg(String username) {
+        //1.查出该用户的信息
+        MtimeUserT mtimeUserT = userTMapper.selectByUsername(username);
+        //2.将用户信息转换成json格式数据(使用fastjson)
+        String jsonOfUsermsg = JSON.toJSONString(mtimeUserT);
+        System.out.println("jsonOfUsermsg = " + jsonOfUsermsg);
+
+        //3.存入redis里，key=username,value=json字符串
+        Jedis jedis = JedisUtil.getJedisFromPool();
+        String result = jedis.set(username, jsonOfUsermsg);
+        jedis.close();
+        return result;
+    }
+
+    @Override
+    public boolean jedisTokenExist(String userTokenKey, String authToken) {
+        Jedis jedis = JedisUtil.getJedisFromPool();
+        String tokenInRedis = jedis.get(userTokenKey);
+        if (authToken.equals(tokenInRedis)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean jedisTokenClean(String userTokenKey, String authToken) {
+        Jedis jedis = JedisUtil.getJedisFromPool();
+        String result = jedis.setex(userTokenKey, 1, authToken);
+        if ("OK".equalsIgnoreCase(result)){
+            return true;
+        }
+        return false;
+    }
+
+
+    private Integer getUseridByName(String username) {
+        Integer uuid =  userTMapper.getUseridByName(username);
+        return uuid;
     }
 
 
