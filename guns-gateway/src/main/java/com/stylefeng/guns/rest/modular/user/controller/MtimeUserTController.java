@@ -193,8 +193,11 @@ public class MtimeUserTController {
             statusAndMsg.setMsg("成功退出");
         }else {
             //2.token不存在，则为未登录
-            statusAndMsg.setStatus(1);
-            statusAndMsg.setMsg("退出失败，用户尚未登录");
+           /* statusAndMsg.setStatus(1);
+            statusAndMsg.setMsg("退出失败，用户尚未登录");*/
+            //这里抓包结果跟接口文档不一样，修改如下：
+            statusAndMsg.setStatus(700);
+            statusAndMsg.setMsg("expire");
         }
         return statusAndMsg;
     }

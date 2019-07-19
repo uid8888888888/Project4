@@ -130,9 +130,11 @@ public class MtimeUserTServiceImpl implements IMtimeUserTService {
         String jsonOfUsermsg = JSON.toJSONString(mtimeUserT);
         System.out.println("jsonOfUsermsg = " + jsonOfUsermsg);
 
-        //3.存入redis里，key=username,value=json字符串
+        //3.存入redis里，key=username,value=json字符串，有效期1天
         Jedis jedis = JedisUtil.getJedisFromPool();
-        String result = jedis.set(username, jsonOfUsermsg);
+        //String result = jedis.set(username, jsonOfUsermsg);
+        String result = jedis.setex(username,86400,jsonOfUsermsg);
+
         jedis.close();
         return result;
     }
