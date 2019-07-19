@@ -3,7 +3,6 @@ package com.stylefeng.guns.rest.modular.cinema.service;
 import com.stylefeng.guns.rest.modular.cinema.service.vo.*;
 
 import java.util.List;
-import java.util.LongSummaryStatistics;
 
 public interface CinemaService {
 
@@ -16,4 +15,8 @@ public interface CinemaService {
     List<Area> getAreas(Integer areaId);
 
     List<Halltype> getHalltype(Integer hallType);
+
+    FResultVo getFields(Integer cinemaId);
+
+    NewFieldInfo getFieldInfo(Integer cinemaId, Integer fieldId);
 }

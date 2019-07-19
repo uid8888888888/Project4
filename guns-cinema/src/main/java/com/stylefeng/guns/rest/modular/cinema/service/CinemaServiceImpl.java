@@ -3,18 +3,9 @@ package com.stylefeng.guns.rest.modular.cinema.service;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.stylefeng.guns.rest.common.persistence.dao.MtimeAreaDictTMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.MtimeBrandDictTMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.MtimeCinemaTMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.MtimeHallDictTMapper;
-import com.stylefeng.guns.rest.common.persistence.model.MtimeAreaDictT;
-import com.stylefeng.guns.rest.common.persistence.model.MtimeBrandDictT;
-import com.stylefeng.guns.rest.common.persistence.model.MtimeCinemaT;
-import com.stylefeng.guns.rest.common.persistence.model.MtimeHallDictT;
-import com.stylefeng.guns.rest.modular.cinema.service.vo.Area;
-import com.stylefeng.guns.rest.modular.cinema.service.vo.Brand;
-import com.stylefeng.guns.rest.modular.cinema.service.vo.CinemaVo;
-import com.stylefeng.guns.rest.modular.cinema.service.vo.Halltype;
+import com.stylefeng.guns.rest.common.persistence.dao.*;
+import com.stylefeng.guns.rest.common.persistence.model.*;
+import com.stylefeng.guns.rest.modular.cinema.service.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -37,6 +28,15 @@ public class CinemaServiceImpl implements CinemaService {
 
     @Autowired
     private MtimeAreaDictTMapper areaDictTMapper;
+
+    @Autowired
+    private MtimeHallFilmInfoTMapper filmInfoTMapper;
+
+    @Autowired
+    private MtimeFieldTMapper fieldTMapper;
+
+    @Autowired
+    private MtimeHallDictTMapper hallDictTMapper;
 
     @Override
     public List<CinemaVo> getCinemas(Integer brandId, Integer districtId, Integer hallType, Integer pageSize, Integer nowPage) {
@@ -159,5 +159,60 @@ public class CinemaServiceImpl implements CinemaService {
             halltypes.add(halltype);
         }
         return halltypes;
+    }
+
+    @Override
+    public FResultVo getFields(Integer cinemaId) {
+        FResultVo resultVo = new FResultVo();
+        CinemaInfo cinemaInfo = getCinemaInfo(cinemaId);
+        List<FilmInfo> filmInfoList = getFilmInfoList(cinemaId);
+        resultVo.setCinemaInfo(cinemaInfo);
+        resultVo.setFilmList(filmInfoList);
+        return resultVo;
+    }
+
+    private List<FilmInfo> getFilmInfoList(Integer cinemaId) {
+        List<FilmInfo> filmInfoList = filmInfoTMapper.getFilmInfoList(cinemaId + "");
+        return filmInfoList;
+    }
+
+    private CinemaInfo getCinemaInfo(Integer cinemaId) {
+        CinemaInfo cinemaInfo = new CinemaInfo();
+        MtimeCinemaT mtimeCinemaT = cinemaTMapper.selectById(cinemaId);
+        cinemaInfo.setCinemaId(mtimeCinemaT.getUuid());
+        cinemaInfo.setCinemaAdress(mtimeCinemaT.getCinemaAddress());
+        cinemaInfo.setCinemaName(mtimeCinemaT.getCinemaName());
+        cinemaInfo.setCinemaPhone(mtimeCinemaT.getCinemaPhone());
+        cinemaInfo.setImgUrl(mtimeCinemaT.getImgAddress());
+        return cinemaInfo;
+    }
+
+    @Override
+    public NewFieldInfo getFieldInfo(Integer cinemaId, Integer fieldId) {
+        NewFieldInfo fieldInfo = new NewFieldInfo();
+        MtimeFieldT mtimeFieldT = fieldTMapper.selectById(fieldId);
+        CinemaInfo cinemaInfo = getCinemaInfo(cinemaId);
+        NewFilmInfo filmInfo = getFilmInfo(mtimeFieldT.getFilmId());
+        HallInfo hallInfo = hallDictTMapper.getHallInfo(fieldId + "");
+        fieldInfo.setCinemaInfo(cinemaInfo);
+        fieldInfo.setFilmInfo(filmInfo);
+        fieldInfo.setHallInfo(hallInfo);
+        return fieldInfo;
+    }
+
+    private NewFilmInfo getFilmInfo(Integer filmId) {
+        EntityWrapper<MtimeHallFilmInfoT> entityWrapper = new EntityWrapper<>();
+        entityWrapper.eq("film_id", filmId);
+        List<MtimeHallFilmInfoT> mtimeHallFilmInfoTS = filmInfoTMapper.selectList(entityWrapper);
+        MtimeHallFilmInfoT hallFilmInfoT = mtimeHallFilmInfoTS.get(0);
+        NewFilmInfo filmInfo = new NewFilmInfo();
+        filmInfo.setFilmId(hallFilmInfoT.getFilmId());
+        filmInfo.setFilmName(hallFilmInfoT.getFilmName());
+        filmInfo.setFilmCats(hallFilmInfoT.getFilmCats());
+        filmInfo.setFilmLength(hallFilmInfoT.getFilmLength());
+        filmInfo.setFilmType(hallFilmInfoT.getFilmLanguage());
+        filmInfo.setImgAddress(hallFilmInfoT.getImgAddress());
+        return filmInfo;
+
     }
 }

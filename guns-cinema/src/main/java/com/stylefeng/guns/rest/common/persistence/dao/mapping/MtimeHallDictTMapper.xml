@@ -9,4 +9,13 @@
         <result column="seat_address" property="seatAddress" />
     </resultMap>
 
+
+    <select id="getHallInfo" resultType="com.stylefeng.guns.rest.modular.cinema.service.vo.HallInfo">
+        SELECT h.UUID hallFieldId,
+        f.hall_name hallName,
+        f.price price,
+        h.seat_address seatFile
+        from mtime_field_t f, mtime_hall_dict_t h where f.hall_id = h.UUID and f.UUID = #{id};
+    </select>
+
 </mapper>

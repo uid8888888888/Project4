@@ -22,7 +22,7 @@
 
         <dependency>
             <groupId>com.stylefeng</groupId>
-            <artifactId>guns-common-api</artifactId>
+            <artifactId>guns-commonapi</artifactId>
             <version>1.0.0</version>
         </dependency>
 

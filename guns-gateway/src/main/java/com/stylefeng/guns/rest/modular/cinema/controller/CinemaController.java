@@ -2,10 +2,7 @@ package com.stylefeng.guns.rest.modular.cinema.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.stylefeng.guns.rest.modular.cinema.service.CinemaService;
-import com.stylefeng.guns.rest.modular.cinema.service.vo.Area;
-import com.stylefeng.guns.rest.modular.cinema.service.vo.Brand;
-import com.stylefeng.guns.rest.modular.cinema.service.vo.CinemaVo;
-import com.stylefeng.guns.rest.modular.cinema.service.vo.Halltype;
+import com.stylefeng.guns.rest.modular.cinema.service.vo.*;
 import com.stylefeng.guns.rest.modular.cinema.vo.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,4 +44,26 @@ public class CinemaController {
         resultVo.setStatus(0);
         return resultVo;
     }
+
+    @RequestMapping("getFields")
+    public FieldResultVo getFields(Integer cinemaId){
+        FResultVo fields = cinemaService.getFields(cinemaId);
+        FieldResultVo<Object> resultVo = new FieldResultVo<>();
+        resultVo.setData(fields);
+        resultVo.setImgPre("com.cskaoyan");
+        resultVo.setStatus(0);
+        return  resultVo;
+    }
+
+    @RequestMapping("getFieldInfo")
+    public FieldResultVo getFieldInfo(Integer cinemaId, Integer fieldId){
+        NewFieldInfo fieldInfo = cinemaService.getFieldInfo(cinemaId, fieldId);
+        FieldResultVo<Object> resultVo = new FieldResultVo<>();
+        resultVo.setData(fieldInfo);
+        resultVo.setImgPre("com.cskaoyan");
+        resultVo.setStatus(0);
+        return  resultVo;
+    }
+
+
 }

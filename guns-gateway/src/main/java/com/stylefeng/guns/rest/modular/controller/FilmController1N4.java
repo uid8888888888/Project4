@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class FilmController1N4 {
 
-    @Reference
+    @Reference(interfaceClass = FilmIndexService.class, check = false)
     FilmIndexService filmIndexService;
 
-    @Reference
+    @Reference(interfaceClass = FilmDetailService.class, check = false)
     FilmDetailService filmDetailService;
 
     @RequestMapping("film/getIndex")
