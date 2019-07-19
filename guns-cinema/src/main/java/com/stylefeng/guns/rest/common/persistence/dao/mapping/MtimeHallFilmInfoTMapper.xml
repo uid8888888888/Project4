@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.rest.common.persistence.dao.MtimeHallFilmInfoTMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.common.persistence.model.MtimeHallFilmInfoT">
+        <id column="UUID" property="uuid" />
+        <result column="film_id" property="filmId" />
+        <result column="film_name" property="filmName" />
+        <result column="film_length" property="filmLength" />
+        <result column="film_cats" property="filmCats" />
+        <result column="film_language" property="filmLanguage" />
+        <result column="actors" property="actors" />
+        <result column="img_address" property="imgAddress" />
+    </resultMap>
+
+
+    <resultMap id="FilmInfoMap" type="com.stylefeng.guns.rest.modular.cinema.service.vo.FilmInfo">
+        <result column="filmId" property="filmId" />
+        <result column="filmName" property="filmName" />
+        <result column="film_length" property="filmLength" />
+        <result column="film_cats" property="filmCats" />
+        <result column="film_language" property="filmType" />
+        <result column="actors" property="actors" />
+        <result column="img_address" property="imgAddress" />
+        <collection property="filmFields" ofType="com.stylefeng.guns.rest.modular.cinema.service.vo.FieldInfo">
+            <id column="UUID" property="fieldId" />
+            <result column="begin_time" property="beginTime" />
+            <result column="end_time" property="endTime" />
+            <result column="hall_name" property="hallName" />
+            <result column="film_language" property="language" />
+            <result column="price" property="price" />
+        </collection>
+    </resultMap>
+    <select id="getFilmInfoList" resultMap="FilmInfoMap">
+        SELECT
+        f.film_id filmId,
+        f.film_name filmName,
+        f.film_length,
+        f.film_cats,
+        f.film_language,
+        f.actors,
+        f.img_address,
+        m.UUID,
+        m.begin_time,
+        m.end_time,
+        m.hall_name,
+        m.price
+        from mtime_field_t m, mtime_hall_film_info_t f where f.film_id = m.film_id and m.cinema_id = #{id}
+    </select>
+
+</mapper>
