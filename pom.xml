@@ -17,6 +17,7 @@
         <module>guns-user</module>
         <module>guns-gateway</module>
         <module>guns-commonapi</module>
+        <module>guns-cinema</module>
     </modules>
 
     <parent>
