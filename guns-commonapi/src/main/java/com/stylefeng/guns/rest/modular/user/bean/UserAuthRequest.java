@@ -13,11 +13,11 @@ import java.io.Serializable;
 public class UserAuthRequest implements Credence, Serializable {
 
     private static final long serialVersionUID = -9178015872455676078L;
-    private String username;
+    private String userName;
     private String password;
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -28,13 +28,13 @@ public class UserAuthRequest implements Credence, Serializable {
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
     @Override
     public String getCredenceName() {
-        return this.username;
+        return this.userName;
     }
 
     @Override

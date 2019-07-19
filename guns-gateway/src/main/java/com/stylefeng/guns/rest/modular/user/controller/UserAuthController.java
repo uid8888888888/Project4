@@ -26,7 +26,7 @@ public class UserAuthController {
     @Reference(check = false)
     IMtimeUserTService userTService;
 
-    @RequestMapping(value = "/auth", method = RequestMethod.POST, params = {"username","password"})
+    @RequestMapping(value = "/auth", method = RequestMethod.POST, params = {"userName","password"})
     public StatusDataAndMsg userLogin(UserAuthRequest authRequest){
         StatusDataAndMsg<Object> statusDataAndMsg = new StatusDataAndMsg<>();
 
@@ -35,7 +35,7 @@ public class UserAuthController {
         if (validate){
             //2.在网关产生token
             try {
-                String username = authRequest.getUsername();
+                String username = authRequest.getUserName();
                 final String randomKey = jwtTokenUtil.getRandomKey();
                 final String token = jwtTokenUtil.generateToken(username, randomKey);
                 TokenAndRandomkey tokenAndRandomkey = new TokenAndRandomkey();
