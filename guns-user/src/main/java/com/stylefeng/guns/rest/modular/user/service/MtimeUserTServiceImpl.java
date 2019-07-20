@@ -116,7 +116,9 @@ public class MtimeUserTServiceImpl implements IMtimeUserTService {
     @Override
     public String jedisStoreToken(String userTokenKey, String token) {
         Jedis jedis = JedisUtil.getJedisFromPool();
-        String result = jedis.set(userTokenKey, token);
+        //String result = jedis.set(userTokenKey, token);
+        //token在redis里的过期时间设为10分钟
+        String result = jedis.setex(userTokenKey,600, token);
         jedis.close();
 
         return result;
