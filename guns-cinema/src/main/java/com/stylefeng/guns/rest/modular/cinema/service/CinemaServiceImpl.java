@@ -38,6 +38,7 @@ public class CinemaServiceImpl implements CinemaService {
     @Autowired
     private MtimeHallDictTMapper hallDictTMapper;
 
+
     @Override
     public List<CinemaVo> getCinemas(Integer brandId, Integer districtId, Integer hallType, Integer pageSize, Integer nowPage) {
         List<CinemaVo> cinemaVos = new ArrayList<>();
@@ -194,11 +195,14 @@ public class CinemaServiceImpl implements CinemaService {
         CinemaInfo cinemaInfo = getCinemaInfo(cinemaId);
         NewFilmInfo filmInfo = getFilmInfo(mtimeFieldT.getFilmId());
         HallInfo hallInfo = hallDictTMapper.getHallInfo(fieldId + "");
+        hallInfo.setSoldSeats("1,2,3,4");
         fieldInfo.setCinemaInfo(cinemaInfo);
         fieldInfo.setFilmInfo(filmInfo);
         fieldInfo.setHallInfo(hallInfo);
         return fieldInfo;
     }
+
+
 
     private NewFilmInfo getFilmInfo(Integer filmId) {
         EntityWrapper<MtimeHallFilmInfoT> entityWrapper = new EntityWrapper<>();
