@@ -3,16 +3,15 @@ package com.stylefeng.guns.rest.modular.order;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.stylefeng.guns.rest.common.persistence.dao.MtimeCinemaTMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.MtimeFieldTMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.MtimeHallFilmInfoTMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.MtimeUserTMapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.*;
 import com.stylefeng.guns.rest.modular.cinema.service.CinemaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +31,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     MtimeUserTMapper userTMapper;
+
+    @Autowired
+    MoocOrderTMapper orderTMapper;
 
     @Override
     public OrderInfo buyTickets(String fieldId, String soldSeats, String seatsName, String username) {
@@ -56,6 +58,7 @@ public class OrderServiceImpl implements OrderService {
         return orderInfo;
     }
 
+
     private MoocOrderT insertOrder(MtimeHallFilmInfoT filmInfo, MtimeFieldT fieldInfo, MtimeCinemaT cinemaInfo, MtimeUserT userInfo,String soldSeats, String seatsName) {
         MoocOrderT order = new MoocOrderT();
         UUID uuid = UUID.randomUUID();
@@ -73,6 +76,56 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderTime(new Date());
         order.setOrderUser(userInfo.getUuid());
         order.setOrderStatus(0);
+        Integer insert = orderTMapper.insert(order);
         return order;
+    }
+
+    @Override
+    public List<UserOrderInfo> getOrderInfo(String nowPage, String pageSize, String username) {
+        EntityWrapper<MtimeUserT> entityWrapper = new EntityWrapper<>();
+        entityWrapper.eq("user_name", username);
+        List<MtimeUserT> userTS = userTMapper.selectList(entityWrapper);
+        MtimeUserT userInfo = userTS.get(0);
+        List<MoocOrderT> userOrders = getUserOrder(userInfo.getUuid(),nowPage, pageSize);
+        List<UserOrderInfo> orderInfos = new ArrayList<>();
+        for (MoocOrderT userOrder : userOrders) {
+            UserOrderInfo orderInfo = new UserOrderInfo();
+            orderInfo.setOrderId(userOrder.getUuid());
+            MtimeHallFilmInfoT filmInfo = filmInfoTMapper.selectById(userOrder.getFilmId());
+            orderInfo.setFilmName(filmInfo.getFilmName());
+            MtimeFieldT fieldInfo = fieldTMapper.selectById(userOrder.getFieldId());
+            orderInfo.setFieldTime("今天 9月8号 " + fieldInfo.getBeginTime());
+            Integer cinemaId = fieldInfo.getCinemaId();
+            MtimeCinemaT cinemaInfo = cinemaTMapper.selectById(cinemaId);
+            orderInfo.setCinemaName(cinemaInfo.getCinemaName());
+            orderInfo.setSeatsName(userOrder.getSeatsName());
+            orderInfo.setOrderPrice(userOrder.getOrderPrice());
+            Integer status = userOrder.getOrderStatus();
+            if(status == 1){
+                orderInfo.setOrderStatus("未支付");
+            }else if (status == 2){
+                orderInfo.setOrderStatus("已支付");
+            }else if(status == 3){
+                orderInfo.setOrderStatus("已完成");
+            }else {
+                orderInfo.setOrderStatus("已关闭");
+            }
+            orderInfos.add(orderInfo);
+        }
+        return orderInfos;
+    }
+
+    private List<MoocOrderT> getUserOrder(Integer uuid, String nowPage, String pageSize) {
+        EntityWrapper<MoocOrderT> entityWrapper = new EntityWrapper<>();
+        entityWrapper.eq("order_user", uuid);
+        Page page = new Page(1, 5);
+        if(pageSize != null){
+            page.setSize(Integer.parseInt(pageSize));
+        }
+        if(nowPage != null){
+            page.setCurrent(Integer.parseInt(nowPage));
+        }
+        List<MoocOrderT> orderTS = orderTMapper.selectPage(page, entityWrapper);
+        return orderTS;
     }
 }

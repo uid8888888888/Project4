@@ -6,7 +6,6 @@
     <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.modular.film.vo.CatInfo">
         <result column="UUID" property="catId" javaType="Integer"/>
         <result column="show_name" property="catName" javaType="String"/>
-
     </resultMap>
 
     <select id="getAllCatInfo"  resultMap="BaseResultMap">

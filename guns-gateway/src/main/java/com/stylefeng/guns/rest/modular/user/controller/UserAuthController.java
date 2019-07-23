@@ -26,7 +26,7 @@ public class UserAuthController {
     @Reference(check = false)
     IMtimeUserTService userTService;
 
-    @RequestMapping(value = "/auth", method = RequestMethod.POST, params = {"username","password"})
+    @RequestMapping(value = "/auth", method = RequestMethod.POST, params = {"userName","password"})
     public StatusDataAndMsg userLogin(UserAuthRequest authRequest){
         StatusDataAndMsg<Object> statusDataAndMsg = new StatusDataAndMsg<>();
 
@@ -35,15 +35,27 @@ public class UserAuthController {
         if (validate){
             //2.在网关产生token
             try {
+                String username = authRequest.getUserName();
                 final String randomKey = jwtTokenUtil.getRandomKey();
-                final String token = jwtTokenUtil.generateToken(authRequest.getUsername(), randomKey);
+                final String token = jwtTokenUtil.generateToken(username, randomKey);
                 TokenAndRandomkey tokenAndRandomkey = new TokenAndRandomkey();
                 tokenAndRandomkey.setToken(token);
                 tokenAndRandomkey.setRandomKey(randomKey);
                 statusDataAndMsg.setData(tokenAndRandomkey);
                 statusDataAndMsg.setStatus(0);
+
+                /* 3.1 生成token成功后，在返回token时将token存入redis里（给用户退出功能使用），
+                * 并将用户关键信息（如uuid）的json格式数据存入redis（给其他需要用户其他信息如uuid的模块使用）。
+                * */
+
+                //将token存入redis里, String: key=usernameToken, value=token
+                String userTokenKey = username + "Token";
+                userTService.jedisStoreToken(userTokenKey,token);
+                //将该用户的信息查出并存入redis, String: key=username, value=用户信息的json格式数据
+                userTService.jedisStoreUserMsg(username);
+
             }catch (Exception e){
-                //3.产生token失败
+                //3.2 产生token失败
                 statusDataAndMsg.setStatus(999);
                 statusDataAndMsg.setMsg("系统出现异常，请联系管理员");
             }

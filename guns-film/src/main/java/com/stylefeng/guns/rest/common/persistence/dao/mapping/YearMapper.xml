@@ -6,15 +6,15 @@
     <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.modular.film.vo.YearInfo">
         <id column="UUID" property="yearId" javaType="Integer"/>
         <result column="show_name" property="yearName" javaType="String"/>
-        <result column="is_Active" property="isActive" javaType="Boolean"/>
+
     </resultMap>
 
     <select id="getAllYearInfo"  resultMap="BaseResultMap">
-        SELECT UUID,show_name,is_Active FROM mtime_year_dict_t
+        SELECT UUID,show_name FROM mtime_year_dict_t
     </select>
 
     <select id="getOneYearInfo" parameterType="Integer" resultMap="BaseResultMap">
-        SELECT UUID,show_name,is_Active FROM mtime_year_dict_t where UUID = #{UUID}
+        SELECT UUID,show_name FROM mtime_year_dict_t where UUID = #{UUID}
     </select>
 
 </mapper>

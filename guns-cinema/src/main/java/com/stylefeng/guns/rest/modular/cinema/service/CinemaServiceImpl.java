@@ -38,6 +38,9 @@ public class CinemaServiceImpl implements CinemaService {
     @Autowired
     private MtimeHallDictTMapper hallDictTMapper;
 
+    @Autowired
+    private MoocOrderTMapper orderTMapper;
+
 
     @Override
     public List<CinemaVo> getCinemas(Integer brandId, Integer districtId, Integer hallType, Integer pageSize, Integer nowPage) {
@@ -195,7 +198,21 @@ public class CinemaServiceImpl implements CinemaService {
         CinemaInfo cinemaInfo = getCinemaInfo(cinemaId);
         NewFilmInfo filmInfo = getFilmInfo(mtimeFieldT.getFilmId());
         HallInfo hallInfo = hallDictTMapper.getHallInfo(fieldId + "");
-        hallInfo.setSoldSeats("1,2,3,4");
+        EntityWrapper<MoocOrderT> entityWrapper = new EntityWrapper<>();
+        entityWrapper.eq("field_id", fieldId);
+        List<MoocOrderT> orders = orderTMapper.selectList(entityWrapper);
+        StringBuffer sb = new StringBuffer();
+        for (MoocOrderT order : orders) {
+            String ids = order.getSeatsIds();
+            String[] split = ids.split(",");
+            for (int i = 0; i < split.length; i++) {
+                sb.append(split[i]);
+                if(i != split.length - 1){
+                    sb.append(",");
+                }
+            }
+        }
+        hallInfo.setSoldSeats(sb.toString());
         fieldInfo.setCinemaInfo(cinemaInfo);
         fieldInfo.setFilmInfo(filmInfo);
         fieldInfo.setHallInfo(hallInfo);

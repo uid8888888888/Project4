@@ -6,15 +6,15 @@
     <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.modular.film.vo.SourceInfo">
         <id column="UUID" property="sourceId" javaType="Integer"/>
         <result column="show_name" property="sourceName" javaType="String"/>
-        <result column="is_Active" property="isActive" javaType="Boolean"/>
+
     </resultMap>
 
     <select id="getAllSourceInfo"  resultMap="BaseResultMap">
-        SELECT UUID,show_name,is_Active FROM mtime_source_dict_t
+        SELECT UUID,show_name FROM mtime_source_dict_t
     </select>
 
     <select id="getOneSourceInfo" parameterType="Integer" resultMap="BaseResultMap">
-        SELECT UUID,show_name,is_Active FROM mtime_source_dict_t where UUID = #{UUID}
+        SELECT UUID,show_name FROM mtime_source_dict_t where UUID = #{UUID}
     </select>
 
 </mapper>

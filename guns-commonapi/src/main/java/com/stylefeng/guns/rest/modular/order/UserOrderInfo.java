@@ -3,12 +3,11 @@ package com.stylefeng.guns.rest.modular.order;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.Period;
 
 @Data
-public class OrderInfo implements Serializable {
+public class UserOrderInfo implements Serializable {
 
-    private static final long serialVersionUID = -990007822360857479L;
+    private static final long serialVersionUID = 7428767081376204506L;
 
     private String orderId;
 
@@ -22,5 +21,5 @@ public class OrderInfo implements Serializable {
 
     private double orderPrice;
 
-    private String orderTimestamp;
+    private String orderStatus;
 }

@@ -23,4 +23,6 @@ public interface MtimeUserTMapper extends BaseMapper<MtimeUserT> {
     MtimeUserT selectByUsername(@Param("username") String usernameFromToken);
 
     String getPasswordByUsername(@Param("username")String username);
+
+    Integer getUseridByName(@Param("username")String username);
 }

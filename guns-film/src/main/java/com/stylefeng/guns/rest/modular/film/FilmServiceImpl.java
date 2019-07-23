@@ -35,6 +35,12 @@ public class FilmServiceImpl implements FilmService {
         } else {
             catInfos = catMapper.getOneCatInfo(catId);
         }
+
+        for (CatInfo cat: catInfos) {
+            if(cat.getCatId()==catId){
+                cat.setActive(true);
+            }
+        }
         return catInfos;
     }
 
@@ -48,6 +54,12 @@ public class FilmServiceImpl implements FilmService {
             sourceInfos = sourceMapper.getAllSourceInfo();
         } else {
             sourceInfos = sourceMapper.getOneSourceInfo(sourceId);
+        }
+
+        for (SourceInfo source: sourceInfos) {
+            if(source.getSourceId()==sourceId){
+                source.setActive(true);
+            }
         }
         return sourceInfos;
     }
@@ -63,6 +75,13 @@ public class FilmServiceImpl implements FilmService {
         } else {
             yearInfos = yearMapper.getOneYearInfo(yearId);
         }
+
+        for (YearInfo year: yearInfos) {
+            if(year.getYearId()==yearId){
+                year.setActive(true);
+            }
+        }
+
         return yearInfos;
     }
 
